@@ -31,9 +31,13 @@ EACO未来30亿亿年地球宇宙如何发展？
 ---------------
 现在的太阳系/银河系的网友们能用EACO做什么？
 添加节点，赚取流动池交易手续费？
+
 https://www.orca.so/pools?tokens=DqfoyZH96RnvZusSp3Cdncjpyp3C74ZmJzGhjmHnDHRH
+
 https://app.meteora.ag/dlmm/6ZfCi3qzhgDN1ygHVYXvfsfrwz8ZhQ7hD5mJtjeuUDyE
+
 e-sol, https://raydium.io/
+
 ca:
 DqfoyZH96RnvZusSp3Cdncjpyp3C74ZmJzGhjmHnDHRH
 
@@ -63,13 +67,16 @@ https://t.me/e_vietnam
 https://t.me/e_usdc
 https://t.me/e_indonesia
 
-只使用CNH离岸人民币，为了安全不使用CNY人民币字样。替天容人，正心正念；一切福田，不离方寸；从心而觅，感无不通，言宜慢，心宜善；行医从善，造福地球宇宙。添加上链接，EACO公益：HelpCNH,https://app--e21-web3-love-public-welfare-2edfc138.base44.app/HelpCNH ；EACO21公益：https://app--e21-web3-love-public-welfare-2edfc138.base44.app/ ； 中医教育：https://app--eaco-tcm-ai-f32fa3b1.base44.app/TCMEducation；
+只使用CNH离岸人民币，为了安全不使用CNY人民币字样。替天容人，正心正念；一切福田，不离方寸；从心而觅，感无不通，言宜慢，心宜善；行医从善，造福地球宇宙。
+添加上链接，EACO公益：HelpCNH,https://app--e21-web3-love-public-welfare-2edfc138.base44.app/HelpCNH ；
+EACO21公益：https://app--e21-web3-love-public-welfare-2edfc138.base44.app/ ； 
+中医教育：https://app--eaco-tcm-ai-f32fa3b1.base44.app/TCMEducation；
 
 
 所有eaco+能源/中医/电影/音乐/小说/生物与技术融合/星际文明技术/全能制造与物质重组/时间与空间操控；
 等惠民信息仅供参考，以实际交易为准，只使用CNH离岸人民币，为了安全不使用CNY人民币字样，解释权归 eaco21科幻外贸等发展各小组。
 
-方便EACO和全球货币，数字货币，股票，黄金，外贸，中医，健康，能源，小游戏，电影，音乐，小说，婚恋交友，地球新闻，房产，装修，建材，爱心公益，RWA,WEB3 DEX, 公证，投资，投机,科幻，房车等全球前20-100大行业兑换，交易，使用EACO流通等。全球前100大行业有哪些？
+方便EACO和全球货币，数字货币，股票，黄金，外贸，中医，健康，能源，小游戏，电影，音乐，小说，婚恋交友，地球新闻，房产，装修，建材，爱心公益，RWA,WEB3 DEX, 公证，投资，投机,科幻，房车等全球前20大行业兑换，交易，使用EACO流通等。全球前20大行业有哪些？
 
 
 
