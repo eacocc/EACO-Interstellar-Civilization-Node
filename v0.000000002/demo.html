@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EACO Interstellar Civilization Node v0.000000002</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a1a;
+            color: #e0e0e0;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #4f46e5, #c026d3);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(192, 38, 211, 0.6);
+            transform: translateY(-2px);
+        }
+        .tab-active {
+            background-color: #4f46e5;
+            color: #ffffff;
+        }
+        .tab-inactive {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+        }
+        .section-title {
+            background: -webkit-linear-gradient(#818cf8, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div x-data="eacoApp()" class="container mx-auto p-4 md:p-8">
+        
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-8 md:mb-12">
+            <h1 class="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-0" x-text="content.header.title"></h1>
+            <div class="relative" x-data="{ open: false }">
+                <button @click="open = !open" class="flex items-center space-x-2 px-4 py-2 bg-gray-800 rounded-lg">
+                    <span x-text="languages[selectedLanguage]"></span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl z-10">
+                    <template x-for="(lang, code) in languages" :key="code">
+                        <a href="#" @click.prevent="changeLanguage(code)" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700" x-text="lang"></a>
+                    </template>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Hero Section -->
+            <section class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-4 section-title" x-text="content.hero.title"></h2>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8" x-text="content.hero.subtitle"></p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="https://github.com/eacocc/EACO-Interstellar-Civilization-Node" target="_blank" class="btn-primary text-white font-semibold px-6 py-3 rounded-lg" x-text="content.hero.githubButton"></a>
+                    <a href="#liquidity" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-6 py-3 rounded-lg transition" x-text="content.hero.liquidityButton"></a>
+                </div>
+            </section>
+
+            <!-- What is EACO? -->
+            <section class="mb-16">
+                <h3 class="text-3xl font-bold text-center mb-8 section-title" x-text="content.whatIs.title"></h3>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="glass-card p-8">
+                        <h4 class="text-xl font-bold mb-4" x-text="content.whatIs.subtitle1"></h4>
+                        <p class="mb-4" x-text="content.whatIs.desc1"></p>
+                        <p class="font-semibold text-indigo-300" x-text="content.whatIs.desc2"></p>
+                    </div>
+                    <div class="glass-card p-8">
+                        <h4 class="text-xl font-bold mb-4" x-text="content.whatIs.subtitle2"></h4>
+                        <p class="mb-2"><strong class="text-purple-300">e = EACO (Earth’s Best Coin)</strong>: <span x-text="content.whatIs.e_desc1"></span></p>
+                        <p class="mb-2"><strong class="text-purple-300" x-text="content.whatIs.e_title2"></strong> <span x-text="content.whatIs.e_desc2"></span></p>
+                        <p><strong class="text-purple-300" x-text="content.whatIs.e_title3"></strong> <span x-text="content.whatIs.e_desc3"></span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Applications & Vision -->
+            <section class="mb-16">
+                <h3 class="text-3xl font-bold text-center mb-8 section-title" x-text="content.applications.title"></h3>
+                <div x-data="{ activeTab: 'tech' }">
+                    <div class="flex flex-wrap justify-center gap-2 mb-8">
+                        <button @click="activeTab = 'tech'" :class="activeTab === 'tech' ? 'tab-active' : 'tab-inactive'" class="px-4 py-2 rounded-lg transition" x-text="content.applications.tabTech"></button>
+                        <button @click="activeTab = 'finance'" :class="activeTab === 'finance' ? 'tab-active' : 'tab-inactive'" class="px-4 py-2 rounded-lg transition" x-text="content.applications.tabFinance"></button>
+                        <button @click="activeTab = 'industry'" :class="activeTab === 'industry' ? 'tab-active' : 'tab-inactive'" class="px-4 py-2 rounded-lg transition" x-text="content.applications.tabIndustry"></button>
+                        <button @click="activeTab = 'future'" :class="activeTab === 'future' ? 'tab-active' : 'tab-inactive'" class="px-4 py-2 rounded-lg transition" x-text="content.applications.tabFuture"></button>
+                    </div>
+                    <div class="glass-card p-8 min-h-[300px]">
+                        <!-- Tech Tab -->
+                        <div x-show="activeTab === 'tech'">
+                            <h4 class="text-2xl font-bold mb-4" x-text="content.applications.techTitle"></h4>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li x-text="content.applications.techItem1"></li>
+                                <li x-text="content.applications.techItem2"></li>
+                                <li x-text="content.applications.techItem3"></li>
+                                <li x-text="content.applications.techItem4"></li>
+                            </ul>
+                        </div>
+                        <!-- Finance Tab -->
+                        <div x-show="activeTab === 'finance'">
+                            <h4 class="text-2xl font-bold mb-4" x-text="content.applications.financeTitle"></h4>
+                            <p class="mb-4" x-text="content.applications.financeDesc"></p>
+                             <p class="mb-4" x-text="content.applications.financeDesc2"></p>
+                        </div>
+                        <!-- Industry Tab -->
+                        <div x-show="activeTab === 'industry'">
+                            <h4 class="text-2xl font-bold mb-4" x-text="content.applications.industryTitle"></h4>
+                            <p class="mb-4" x-text="content.applications.industryDesc"></p>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li x-text="content.applications.industryItem1"></li>
+                                <li x-text="content.applications.industryItem2"></li>
+                                <li x-text="content.applications.industryItem3"></li>
+                                <li x-text="content.applications.industryItem4"></li>
+                            </ul>
+                        </div>
+                        <!-- Future Tab -->
+                        <div x-show="activeTab === 'future'">
+                            <h4 class="text-2xl font-bold mb-4" x-text="content.applications.futureTitle"></h4>
+                            <p class="mb-4" x-text="content.applications.futureDesc"></p>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong x-text="content.applications.futureTime1"></strong>: <span x-text="content.applications.futureText1"></span></li>
+                                <li><strong x-text="content.applications.futureTime2"></strong>: <span x-text="content.applications.futureText2"></span></li>
+                                <li><strong x-text="content.applications.futureTime3"></strong>: <span x-text="content.applications.futureText3"></span></li>
+                                <li><strong x-text="content.applications.futureTime4"></strong>: <span x-text="content.applications.futureText4"></span></li>
+                                <li><strong x-text="content.applications.futureTime5"></strong>: <span x-text="content.applications.futureText5"></span></li>
+                                <li><strong x-text="content.applications.futureTime6"></strong>: <span x-text="content.applications.futureText6"></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Liquidity Pools -->
+            <section id="liquidity" class="mb-16">
+                <h3 class="text-3xl font-bold text-center mb-8 section-title" x-text="content.liquidity.title"></h3>
+                <p class="text-center max-w-2xl mx-auto mb-8" x-text="content.liquidity.desc"></p>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <a href="https://www.orca.so/pools?tokens=DqfoyZH96RnvZusSp3Cdncjpyp3C74ZmJzGhjmHnDHRH" target="_blank" class="glass-card p-6 text-center hover:border-indigo-400 transition">
+                        <h4 class="text-xl font-bold">Orca</h4>
+                    </a>
+                    <a href="https://app.meteora.ag/dlmm/6ZfCi3qzhgDN1ygHVYXvfsfrwz8ZhQ7hD5mJtjeuUDyE" target="_blank" class="glass-card p-6 text-center hover:border-indigo-400 transition">
+                        <h4 class="text-xl font-bold">Meteora</h4>
+                    </a>
+                    <a href="https://raydium.io/" target="_blank" class="glass-card p-6 text-center hover:border-indigo-400 transition">
+                        <h4 class="text-xl font-bold">Raydium</h4>
+                    </a>
+                </div>
+                 <p class="text-center text-sm text-gray-400 mt-4" x-text="content.liquidity.feeInfo"></p>
+            </section>
+
+            <!-- Token Info & Resources -->
+            <section class="mb-16">
+                 <h3 class="text-3xl font-bold text-center mb-8 section-title" x-text="content.resources.title"></h3>
+                 <div class="glass-card p-8">
+                     <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div>
+                             <p class="text-lg" x-text="content.resources.contractAddress"></p>
+                             <p class="text-sm md:text-base text-purple-300 break-all">DqfoyZH96RnvZusSp3Cdncjpyp3C74ZmJzGhjmHnDHRH</p>
+                        </div>
+                        <button @click="copyToClipboard('DqfoyZH96RnvZusSp3Cdncjpyp3C74ZmJzGhjmHnDHRH')" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition whitespace-nowrap" x-text="copyStatus"></button>
+                     </div>
+                     <div class="border-t border-gray-700 my-6"></div>
+                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                         <a href="https://linktr.ee/web3eaco" target="_blank" class="hover:text-indigo-300" x-text="content.resources.linktree"></a>
+                         <a href="https://solscan.io/token/DqfoyZH96RnvZusSp3Cdncjpyp3C74ZmJzGhjmHnDHRH" target="_blank" class="hover:text-indigo-300">Solscan</a>
+                         <a href="https://x.com/eacocc" target="_blank" class="hover:text-indigo-300">X (Twitter)</a>
+                         <a href="https://github.com/eacocc/EACO_Exchange_DApp" target="_blank" class="hover:text-indigo-300">E Swap</a>
+                     </div>
+                 </div>
+            </section>
+
+             <!-- Community & Public Welfare -->
+            <section class="mb-16">
+                <h3 class="text-3xl font-bold text-center mb-8 section-title" x-text="content.community.title"></h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="glass-card p-8">
+                        <h4 class="text-xl font-bold mb-4" x-text="content.community.subtitle1"></h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <a href="https://t.me/e_eacocc" target="_blank" class="hover:text-indigo-300">English</a>
+                            <a href="https://t.me/aieaco" target="_blank" class="hover:text-indigo-300" x-text="content.community.chinese"></a>
+                            <a href="https://t.me/eacoespanish" target="_blank" class="hover:text-indigo-300">Español</a>
+                            <a href="https://t.me/e_vietnam" target="_blank" class="hover:text-indigo-300">Tiếng Việt</a>
+                            <a href="https://t.me/e_indonesia" target="_blank" class="hover:text-indigo-300">Indonesia</a>
+                            <a href="https://t.me/eacocny" target="_blank" class="hover:text-indigo-300">CNH Community</a>
+                        </div>
+                    </div>
+                    <div class="glass-card p-8">
+                        <h4 class="text-xl font-bold mb-4" x-text="content.community.subtitle2"></h4>
+                        <div class="flex flex-col space-y-3">
+                            <a href="https://app--e21-web3-love-public-welfare-2edfc138.base44.app/HelpCNH" target="_blank" class="hover:text-indigo-300">EACO <span x-text="content.community.welfare"></span>: HelpCNH</a>
+                            <a href="https://app--e21-web3-love-public-welfare-2edfc138.base44.app/" target="_blank" class="hover:text-indigo-300">EACO21 <span x-text="content.community.welfare"></span></a>
+                            <a href="https://app--eaco-tcm-ai-f32fa3b1.base44.app/TCMEducation" target="_blank" class="hover:text-indigo-300" x-text="content.community.tcm"></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Multi-language Names -->
+            <section class="mb-16">
+                <h3 class="text-3xl font-bold text-center mb-8 section-title" x-text="content.multilang.title"></h3>
+                <div class="glass-card p-8">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-2 text-sm">
+                        <template x-for="item in multilang" :key="item.lang">
+                            <p><strong x-text="item.lang + ':'"></strong> <span x-text="item.name"></span></p>
+                        </template>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="text-center text-sm text-gray-400 border-t border-gray-800 pt-8">
+            <p class="mb-4" x-text="content.footer.disclaimer"></p>
+            <p class="mb-2" x-text="content.footer.motto"></p>
+            <p>&copy; 2025 EACO Sci-Fi Netizens Group. <span x-text="content.footer.rights"></span></p>
+        </footer>
+    </div>
+
+    <script>
+        function eacoApp() {
+            const translations = {
+                'zh-CN': {
+                    header: { title: 'EACO 星际文明节点 v0.000000002' },
+                    hero: { 
+                        title: 'EACO: 连接文明，共创未来',
+                        subtitle: '一个为碳基、硅基及所有形式的文明设计的星际节点，旨在促进和平共处与和谐发展，共同探索宇宙的无限可能。',
+                        githubButton: '查看 GitHub',
+                        liquidityButton: '添加流动性'
+                    },
+                    whatIs: {
+                        title: '什么是 EACO 星际文明节点？',
+                        subtitle1: '核心前提',
+                        desc1: '任何文明不得伤害人类利益，地球人类利益高于一切。这是 EACO 文明得以存在的第一前提。',
+                        desc2: 'EACO 为不同时空的碳基文明、硅基文明等提供一个通用的协作与价值交换框架。',
+                        subtitle2: '【EACO代码重构e文明】',
+                        e_desc1: '代码e即财富, e连接地球和宇宙万物。',
+                        e_title2: '计算劳动价值:',
+                        e_desc2: '量化地球资源与人类劳动。',
+                        e_title3: '总量:',
+                        e_desc3: '13.5亿枚'
+                    },
+                    applications: {
+                        title: '应用与愿景',
+                        tabTech: '前沿科技',
+                        tabFinance: '金融与经济',
+                        tabIndustry: '行业结合',
+                        tabFuture: '未来发展',
+                        techTitle: '科幻与前沿科技领域',
+                        techItem1: '生物与技术融合',
+                        techItem2: '星际文明技术',
+                        techItem3: '全能制造与物质重组',
+                        techItem4: '时间与空间操控',
+                        financeTitle: '金融与经济',
+                        financeDesc: '用户可以通过添加节点，为EACO/e-sol等交易对提供流动性，从而赚取交易手续费。这为太阳系及银河系的网友们提供了一个直接参与并获益的方式。',
+                        financeDesc2: 'EACO 时空预言机旨在预言全球宇宙前30大数字货币，股票，经济，以及日常生活商品的价格与行情趋势。',
+                        industryTitle: '多行业融合应用',
+                        industryDesc: 'EACO旨在与全球前30大行业深度结合，促进价值流通与创新。',
+                        industryItem1: '能源行业：结合太阳能光伏，发展太空能源。',
+                        industryItem2: '生活方式：房车、外贸等行业应用。',
+                        industryItem3: '社交网络：跨境交友、婚恋等网页APP。',
+                        industryItem4: '创作者经济：构建信任生态系统，实现影响力、真实性与传播力的价值转化。',
+                        futureTitle: 'EACO 时空发展蓝图',
+                        futureDesc: '对地球及宇宙文明长远发展的宏大构想。',
+                        futureTime1: '未来300年', futureText1: '全球华人/人类的发展。',
+                        futureTime2: '未来3000年', futureText2: '地球宇宙的发展。',
+                        futureTime3: '未来30万年', futureText3: '地球宇宙的发展。',
+                        futureTime4: '未来30亿年', futureText4: '地球宇宙的发展。',
+                        futureTime5: '未来30万亿年', futureText5: '地球宇宙的发展。',
+                        futureTime6: '未来30亿亿年', futureText6: '地球宇宙的发展。'
+                    },
+                    liquidity: {
+                        title: '成为流动性提供者',
+                        desc: '通过在主流DEX上为EACO提供流动性，您可以赚取交易手续费。点击下方平台，立即参与。',
+                        feeInfo: '手续费参考：基础费率:0.03%, 最高费率:10%, 协议费:0.0015%, 动态费率:0.03%'
+                    },
+                    resources: {
+                        title: '代币信息与核心资源',
+                        contractAddress: '合约地址 (Solana):',
+                        linktree: '官方链接汇总'
+                    },
+                    community: {
+                        title: '社区与公益项目',
+                        subtitle1: '加入全球社区',
+                        chinese: '华语社区',
+                        subtitle2: '公益与教育',
+                        welfare: '公益',
+                        tcm: '中医教育'
+                    },
+                    multilang: {
+                        title: 'EACO 星际文明节点 - 全球化命名'
+                    },
+                    footer: {
+                        disclaimer: '所有eaco+能源/中医/电影/音乐/小说/生物与技术融合/星际文明技术/全能制造与物质重组/时间与空间操控；等惠民信息仅供参考，以实际交易为准，只使用CNH离岸人民币，为了安全不使用CNY人民币字样。',
+                        motto: '替天容人，正心正念；一切福田，不离方寸；从心而觅，感无不通，言宜慢，心宜善；行医从善，造福地球宇宙。',
+                        rights: '解释权归 eaco21科幻外贸等发展各小组。'
+                    },
+                    copyButton: {
+                        copy: '复制地址',
+                        copied: '已复制!'
+                    }
+                },
+                'en': {
+                    header: { title: 'EACO Interstellar Civilization Node v0.000000002' },
+                    hero: { 
+                        title: 'EACO: Connecting Civilizations, Building Futures',
+                        subtitle: 'An interstellar node designed for carbon-based, silicon-based, and all forms of civilizations, aiming to promote peaceful coexistence and harmonious development to explore the infinite possibilities of the universe.',
+                        githubButton: 'View on GitHub',
+                        liquidityButton: 'Add Liquidity'
+                    },
+                    whatIs: {
+                        title: 'What is EACO Interstellar Civilization Node?',
+                        subtitle1: 'The Core Premise',
+                        desc1: 'No civilization shall harm human interests; the interests of humanity on Earth are paramount. This is the first premise for the existence of EACO civilization.',
+                        desc2: 'EACO provides a universal framework for collaboration and value exchange for carbon-based, silicon-based, and other civilizations across different spacetimes.',
+                        subtitle2: '【EACO Code Refactors e-Civilization】',
+                        e_desc1: 'Code "e" is wealth. "e" connects Earth and everything in the universe.',
+                        e_title2: 'Calculate Labor Value:',
+                        e_desc2: 'Quantify Earth\'s resources and human labor.',
+                        e_title3: 'Total Supply:',
+                        e_desc3: '1.35 Billion'
+                    },
+                    applications: {
+                        title: 'Applications & Vision',
+                        tabTech: 'Frontier Tech',
+                        tabFinance: 'Finance & Economy',
+                        tabIndustry: 'Industry Integration',
+                        tabFuture: 'Future Development',
+                        techTitle: 'Sci-Fi & Frontier Technology Fields',
+                        techItem1: 'Biology & Technology Fusion',
+                        techItem2: 'Interstellar Civilization Technology',
+                        techItem3: 'Omnipotent Manufacturing & Matter Reorganization',
+                        techItem4: 'Time & Space Manipulation',
+                        financeTitle: 'Finance & Economy',
+                        financeDesc: 'Users can earn transaction fees by adding nodes and providing liquidity for trading pairs like EACO/e-sol. This offers a direct way for netizens in the solar system and galaxy to participate and benefit.',
+                        financeDesc2: 'The EACO Spacetime Oracle aims to predict price and market trends for the top 30 global cryptocurrencies, stocks, economies, and everyday commodities.',
+                        industryTitle: 'Multi-Industry Integration',
+                        industryDesc: 'EACO aims to deeply integrate with the top 30 global industries to promote value circulation and innovation.',
+                        industryItem1: 'Energy Sector: Combine with solar photovoltaics to develop space energy.',
+                        industryItem2: 'Lifestyle: Applications in RVs, foreign trade, etc.',
+                        industryItem3: 'Social Networks: Cross-border dating and social web apps.',
+                        industryItem4: 'Creator Economy: Build a trust ecosystem to convert influence, authenticity, and communication into value.',
+                        futureTitle: 'EACO Spacetime Development Blueprint',
+                        futureDesc: 'A grand vision for the long-term development of Earth and universal civilization.',
+                        futureTime1: 'Next 300 Years', futureText1: 'Development of global Chinese/humanity.',
+                        futureTime2: 'Next 3000 Years', futureText2: 'Development of the Earth-universe.',
+                        futureTime3: 'Next 300,000 Years', futureText3: 'Development of the Earth-universe.',
+                        futureTime4: 'Next 3 Billion Years', futureText4: 'Development of the Earth-universe.',
+                        futureTime5: 'Next 30 Trillion Years', futureText5: 'Development of the Earth-universe.',
+                        futureTime6: 'Next 30 Quintillion Years', futureText6: 'Development of the Earth-universe.'
+                    },
+                    liquidity: {
+                        title: 'Become a Liquidity Provider',
+                        desc: 'Earn transaction fees by providing liquidity for EACO on major DEXs. Click on a platform below to get started.',
+                        feeInfo: 'Fee Reference: Base Fee: 0.03%, Max Fee: 10%, Protocol Fee: 0.0015%, Dynamic Fee: 0.03%'
+                    },
+                    resources: {
+                        title: 'Token Info & Core Resources',
+                        contractAddress: 'Contract Address (Solana):',
+                        linktree: 'Official Links'
+                    },
+                    community: {
+                        title: 'Community & Public Welfare Projects',
+                        subtitle1: 'Join the Global Community',
+                        chinese: 'Chinese Community',
+                        subtitle2: 'Welfare & Education',
+                        welfare: 'Public Welfare',
+                        tcm: 'TCM Education'
+                    },
+                    multilang: {
+                        title: 'EACO Interstellar Civilization Node - Global Naming'
+                    },
+                    footer: {
+                        disclaimer: 'All information related to eaco+energy/TCM/movies/music/novels/bio-tech fusion/interstellar tech/omnipotent manufacturing/time-space manipulation, etc., is for reference only and subject to actual transactions. Only CNH (offshore RMB) is used for safety, avoiding the CNY symbol.',
+                        motto: 'Accommodate for heaven, be righteous in heart and mind; all fields of blessings are within one\'s heart; seek from the heart, and all will be answered. Speak slowly, be kind at heart; practice medicine with kindness, for the benefit of Earth and the universe.',
+                        rights: 'The right of interpretation belongs to the eaco21 sci-fi, foreign trade, and other development groups.'
+                    },
+                    copyButton: {
+                        copy: 'Copy Address',
+                        copied: 'Copied!'
+                    }
+                }
+            };
+
+            return {
+                selectedLanguage: 'zh-CN',
+                languages: {
+                    'zh-CN': '华语中文',
+                    'en': 'English'
+                },
+                content: translations['zh-CN'],
+                copyStatus: translations['zh-CN'].copyButton.copy,
+                multilang: [
+                    { lang: 'العربية', name: 'عقدة الحضارة الفضائية EACO' },
+                    { lang: '汉语', name: 'EACO 星际文明节点' },
+                    { lang: 'English', name: 'EACO Interstellar Civilization Node' },
+                    { lang: 'Français', name: 'Noeud de civilisation interstellaire EACO' },
+                    { lang: 'Русский', name: 'Звёздный цивилизационный узел EACO' },
+                    { lang: 'Español', name: 'Nodo de civilización interestelar EACO' },
+                    { lang: 'Deutsch', name: 'EACO Interstellare Zivilisationsknoten' },
+                    { lang: '日本語', name: 'EACO 星間星际文明ノード' },
+                    { lang: '한국어', name: 'EACO 항성간 문명 노드' },
+                    { lang: 'Português', name: 'Nó de Civilização Interestelar EACO' },
+                    { lang: 'Italiano', name: 'Nodo di Civiltà Interstellare EACO' },
+                    { lang: 'Nederlands', name: 'EACO Interstellaire Beschavingsknoop' },
+                    { lang: 'Svenska', name: 'EACO Interstellära Civilisationsnod' },
+                    { lang: 'हिन्दी', name: 'ईएसीओ इंटरस्टेलर सभ्यता नोड' },
+                    { lang: 'Tiếng Việt', name: 'Nút Văn minh Hội tụ Các Vì sao EACO' },
+                    { lang: 'Bahasa Melayu', name: 'Node Peradaban Antarabintang EACO' }
+                ],
+                init() {
+                    this.content = translations[this.selectedLanguage];
+                    this.copyStatus = this.content.copyButton.copy;
+                },
+                changeLanguage(lang) {
+                    this.selectedLanguage = lang;
+                    this.content = translations[lang];
+                    this.copyStatus = this.content.copyButton.copy;
+                    document.documentElement.lang = lang;
+                },
+                copyToClipboard(text) {
+                    // Use execCommand for broader compatibility within iFrames
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        this.copyStatus = this.content.copyButton.copied;
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                    document.body.removeChild(textarea);
+                    setTimeout(() => {
+                        this.copyStatus = this.content.copyButton.copy;
+                    }, 2000);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
