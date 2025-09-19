@@ -70,9 +70,11 @@ https://t.me/e_usdc
 https://t.me/e_indonesia
 
 只使用CNH离岸人民币，为了安全不使用CNY人民币字样。替天容人，正心正念；一切福田，不离方寸；从心而觅，感无不通，言宜慢，心宜善；行医从善，造福地球宇宙。
-添加上链接，EACO公益：HelpCNH,https://app--e21-web3-love-public-welfare-2edfc138.base44.app/HelpCNH ；
-EACO21公益：https://app--e21-web3-love-public-welfare-2edfc138.base44.app/ ； 
-中医教育：https://app--eaco-tcm-ai-f32fa3b1.base44.app/TCMEducation；
+添加上链接，EACO公益：HelpCNH,https://app--e21-web3-love.base44.app/HelpCNH ；
+
+EACO21公益：https://app--e21-web3-love.base44.app/ ； 
+
+中医教育：https://tcm.base44.app/TCMEducation；
 
 
 所有eaco+能源/中医/电影/音乐/小说/生物与技术融合/星际文明技术/全能制造与物质重组/时间与空间操控；
