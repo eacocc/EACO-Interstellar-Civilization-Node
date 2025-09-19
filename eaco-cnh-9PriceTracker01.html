@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNH 汇率与 EACO 语义价格 | Price Tracker，全球9大主流法币兑换EACO价格参考</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            color: #d1d5db;
+        }
+        .glass-card {
+            background: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .table-header-sortable {
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .table-header-sortable:hover {
+            color: #38bdf8;
+        }
+        .sort-indicator {
+            display: inline-block;
+            margin-left: 4px;
+            transition: transform 0.3s;
+        }
+        .sort-asc .sort-indicator {
+            transform: rotate(0deg);
+        }
+        .sort-desc .sort-indicator {
+            transform: rotate(180deg);
+        }
+        .pagination-btn {
+            transition: all 0.2s;
+        }
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #38bdf8;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto p-4 md:p-8">
+        <!-- Header Section -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">CNH 汇率与 EACO 语义价格</h1>
+            <p class="text-gray-400">地球文明协议 (Earth Asset Civilization Oracle)</p>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column: Price Tracker -->
+            <div class="lg:col-span-2">
+                <div class="glass-card rounded-xl p-4 md:p-6">
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+                        <h2 class="text-2xl font-semibold text-white">全球9大主流法币兑换价格</h2>
+                        <input type="text" id="searchInput" placeholder="搜索货币 (如: EUR, 欧元)..." class="w-full md:w-64 bg-gray-900 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    </div>
+
+                    <!-- Price Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-gray-700">
+                                    <th class="p-3 text-sm font-semibold text-gray-400 table-header-sortable" data-sort="name">货币名称</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-400 table-header-sortable" data-sort="cnh_rate">CNH 兑换价 <span class="text-xs">(每100单位)</span></th>
+                                    <th class="p-3 text-sm font-semibold text-gray-400 table-header-sortable" data-sort="usd_rate">USD 兑换价 <span class="text-xs">(估算)</span></th>
+                                    <th class="p-3 text-sm font-semibold text-gray-400 table-header-sortable" data-sort="eaco_value">EACO 价值 <span class="text-xs">(估算)</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="currencyTableBody">
+                                <!-- Data rows will be inserted here by JavaScript -->
+                            </tbody>
+                        </table>
+                        <div id="loader" class="flex justify-center items-center py-8">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    
+                </div>
+            </div>
+
+            <!-- Right Column: EACO Module & Tools -->
+            <div class="flex flex-col gap-8">
+                <!-- EACO Semantic Price Module -->
+                <div class="glass-card rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-4">🧭 EACO 三角锚定模型</h3>
+                    <p class="text-sm text-gray-300 mb-4">所有法币通过 CNH 和 USD 的实时汇率进行锚定，再通过 EACO 协议映射其语义权重与价值。</p>
+                    <ul class="space-y-2 text-sm">
+                        <li><span class="font-bold text-sky-400">CNH:</span> 离岸人民币，亚洲流动性代表</li>
+                        <li><span class="font-bold text-green-400">USD:</span> 全球储备货币，传统金融主轴</li>
+                        <li><span class="font-bold text-amber-400">EACO:</span> 协议锚点，代表跨文化劳动价值</li>
+                    </ul>
+                    <hr class="border-gray-700 my-4">
+                    <h4 class="font-semibold text-white mb-2">🧠 EACO 价值计算器</h4>
+                    <p class="text-xs text-gray-400 mb-3">EACO Value = (CNH / USD) × Semantic Weight × Liquidity Factor</p>
+                    <div class="space-y-3">
+                         <div>
+                            <label for="currencySelect" class="block text-sm font-medium text-gray-300">选择货币</label>
+                            <select id="currencySelect" class="mt-1 block w-full bg-gray-900 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"></select>
+                        </div>
+                        <div>
+                            <label for="semanticWeight" class="block text-sm font-medium text-gray-300">语义权重 (0-1)</label>
+                            <input type="number" id="semanticWeight" value="0.8" step="0.01" min="0" max="1" class="mt-1 block w-full bg-gray-900 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="liquidityFactor" class="block text-sm font-medium text-gray-300">流动性等级 (1-10)</label>
+                            <input type="number" id="liquidityFactor" value="5" step="1" min="1" max="10" class="mt-1 block w-full bg-gray-900 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                        </div>
+                        <button id="calculateBtn" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-lg mt-2 transition">计算 EACO 协议价值</button>
+                    </div>
+                    <div id="calculationResult" class="mt-4 text-center bg-gray-900 p-3 rounded-lg hidden">
+                        <!-- Result will be displayed here -->
+                    </div>
+                </div>
+                
+                <!-- Tools & Links -->
+                <div class="glass-card rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-4">技术支持与工具</h3>
+                    <ul class="space-y-3">
+                        <li><a href="https://solscan.io/token/DqfoyZH96RnvZusSp3Cdncjpyp3C74ZmJzGhjmHnDHRH" target="_blank" class="flex items-center text-sky-400 hover:text-sky-300 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            Solscan: 查看实时流通</a></li>
+                        <li><a href="https://dexscreener.com/solana/DqfoyZH96RnvZusSp3Cdncjpyp3C74ZmJzGhjmHnDHRH" target="_blank" class="flex items-center text-sky-400 hover:text-sky-300 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            DexScreener: 实时价格图表</a></li>
+                        <li><a href="https://github.com/eacocc/EACO_Exchange_DApp" target="_blank" class="flex items-center text-sky-400 hover:text-sky-300 transition">
+                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                            EACO DApp 源代码</a></li>
+                         <li><a href="https://linktr.ee/web3eaco" target="_blank" class="flex items-center text-sky-400 hover:text-sky-300 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-5.747-8.994l11.494 0"></path></svg>
+                            EACO 官方链接</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="text-center mt-12 text-gray-500 text-sm">
+            <p>代码e即财富，EACO地球E连接地球和宇宙万物。 $e=$eaco</p>
+            <p>&copy; 2025 EACO Protocol. All rights reserved.</p>
+        </footer>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- DATA ---
+    // EACO/USD 参考价. 在实际应用中, 这个价格应该从DEX API (如Orca, Raydium) 动态获取.
+    const EACO_USD_PRICE = 0.00001953;
+
+    // 全球前100法币数据
+    const currencyData = [
+        // Data is formatted as: { rank, name_cn, name_en, code, cnh_rate }
+        // cnh_rate is for 100 units of foreign currency.
+        { rank: 1, name_cn: "美元", name_en: "US Dollar", code: "USD", cnh_rate: 710.08 },
+        { rank: 2, name_cn: "欧元", name_en: "Euro", code: "EUR", cnh_rate: 836.11 },
+        { rank: 3, name_cn: "日元", name_en: "Japanese Yen", code: "JPY", cnh_rate: 4.828 },
+        { rank: 4, name_cn: "英镑", name_en: "British Pound", code: "GBP", cnh_rate: 962.98 },
+        { rank: 5, name_cn: "离岸人民币", name_en: "Offshore Yuan", code: "CNH", cnh_rate: 100.00 },
+        { rank: 6, name_cn: "澳元", name_en: "Australian Dollar", code: "AUD", cnh_rate: 468.88 },
+        { rank: 7, name_cn: "加元", name_en: "Canadian Dollar", code: "CAD", cnh_rate: 514.78 },
+        { rank: 8, name_cn: "瑞士法郎", name_en: "Swiss Franc", code: "CHF", cnh_rate: 895.74 },
+        { rank: 9, name_cn: "港币", name_en: "Hong Kong Dollar", code: "HKD", cnh_rate: 91.12 },
+    ];
+    
+    // --- STATE MANAGEMENT ---
+    let currentSort = { column: 'rank', direction: 'asc' };
+    let processedData = [];
+
+    // --- DOM ELEMENTS ---
+    const tableBody = document.getElementById('currencyTableBody');
+    const searchInput = document.getElementById('searchInput');
+    const loader = document.getElementById('loader');
+    const currencySelect = document.getElementById('currencySelect');
+
+    // --- INITIALIZATION ---
+    function initialize() {
+        // Pre-process data: calculate USD and EACO values
+        const usdToCnhRate = currencyData.find(c => c.code === 'USD').cnh_rate / 100;
+        processedData = currencyData.map(currency => {
+            const usd_rate = currency.cnh_rate / usdToCnhRate;
+            const eaco_value = EACO_USD_PRICE > 0 ? usd_rate / EACO_USD_PRICE : 0;
+            return {
+                ...currency,
+                name: `${currency.name_cn} ${currency.name_en}`,
+                usd_rate,
+                eaco_value
+            };
+        });
+        
+        // Populate calculator dropdown
+        populateCurrencySelect();
+
+        // Simulate data loading
+        setTimeout(() => {
+            loader.style.display = 'none';
+            renderTable();
+        }, 500);
+
+        // Add event listeners
+        searchInput.addEventListener('input', handleSearch);
+        document.querySelectorAll('.table-header-sortable').forEach(header => {
+            header.addEventListener('click', () => handleSort(header.dataset.sort));
+        });
+        
+        // EACO Calculator listeners
+        document.getElementById('calculateBtn').addEventListener('click', calculateEACOValue);
+    }
+    
+    // --- RENDERING ---
+    function renderTable() {
+        const query = searchInput.value.trim();
+        let displayData;
+
+        if (query) {
+            const fuse = new Fuse(processedData, {
+                keys: ['name_cn', 'name_en', 'code'],
+                threshold: 0.3
+            });
+            displayData = fuse.search(query).map(result => result.item);
+        } else {
+            displayData = [...processedData];
+        }
+
+        // Sort data
+        displayData.sort((a, b) => {
+            const aValue = a[currentSort.column];
+            const bValue = b[currentSort.column];
+            let comparison = 0;
+            if (aValue > bValue) {
+                comparison = 1;
+            } else if (aValue < bValue) {
+                comparison = -1;
+            }
+            return currentSort.direction === 'desc' ? comparison * -1 : comparison;
+        });
+
+        // Paginate data
+        
+
+        // Render rows
+        tableBody.innerHTML = displayData.map(currency => `
+            <tr class="border-b border-gray-800 hover:bg-gray-800 transition-colors">
+                <td class="p-3">
+                    <div class="font-semibold text-white">${currency.name_cn}</div>
+                    <div class="text-xs text-gray-400">${currency.code}</div>
+                </td>
+                <td class="p-3 text-sky-400">¥${formatNumber(currency.cnh_rate)}</td>
+                <td class="p-3 text-green-400">$${formatNumber(currency.usd_rate)}</td>
+                <td class="p-3 text-amber-400">${formatNumber(currency.eaco_value, 0)} <span class="text-xs text-gray-500">$e</span></td>
+            </tr>
+        `).join('');
+        
+        updateSortIndicators();
+    }
+
+    function populateCurrencySelect() {
+        currencySelect.innerHTML = processedData
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map(c => `<option value="${c.code}">${c.name}</option>`)
+            .join('');
+    }
+
+    // --- EVENT HANDLERS ---
+    function handleSearch() {
+        renderTable();
+    }
+
+    function handleSort(column) {
+        if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.column = column;
+            currentSort.direction = 'asc';
+        }
+        renderTable();
+    }
+
+    
+
+    // --- UI UPDATES ---
+    
+    function updateSortIndicators() {
+        document.querySelectorAll('.table-header-sortable').forEach(header => {
+            header.classList.remove('sort-asc', 'sort-desc');
+            header.querySelector('.sort-indicator')?.remove();
+            if (header.dataset.sort === currentSort.column) {
+                header.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+                header.innerHTML += '<span class="sort-indicator">▼</span>';
+            }
+        });
+    }
+
+    // --- EACO CALCULATOR ---
+    function calculateEACOValue() {
+        const selectedCode = currencySelect.value;
+        const currency = processedData.find(c => c.code === selectedCode);
+        const semanticWeight = parseFloat(document.getElementById('semanticWeight').value) || 0;
+        const liquidity = parseInt(document.getElementById('liquidityFactor').value) || 1;
+
+        if (!currency) {
+            alert('请选择一个有效的货币');
+            return;
+        }
+
+        const baseRatio = currency.cnh_rate / currency.usd_rate;
+        const liquidityFactor = Math.log1p(liquidity); // Natural log, as per documentation
+        const eacoProtocolValue = baseRatio * semanticWeight * liquidityFactor;
+
+        const resultDiv = document.getElementById('calculationResult');
+        resultDiv.innerHTML = `
+            <p class="text-sm text-gray-400">${currency.name_cn} (${currency.code}) 的协议价值:</p>
+            <p class="text-xl font-bold text-amber-400 mt-1">${eacoProtocolValue.toFixed(4)} $e</p>
+        `;
+        resultDiv.classList.remove('hidden');
+    }
+
+    // --- UTILITIES ---
+    function formatNumber(num, decimalPlaces = 2) {
+        if (typeof num !== 'number') return 'N/A';
+        return num.toLocaleString('en-US', {
+            minimumFractionDigits: decimalPlaces,
+            maximumFractionDigits: decimalPlaces
+        });
+    }
+
+    // --- START THE APP ---
+    initialize();
+});
+</script>
+
+</body>
+</html>
+
