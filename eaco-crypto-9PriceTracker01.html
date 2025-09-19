@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>十大数字货币兑换 EACO 价格 | Crypto Tracker,十大数字货币兑换 EACO 价格</title>
+    <title>十大数字货币与EACO价格 | Crypto Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -44,53 +44,120 @@
         <!-- Header Section -->
         <header class="text-center mb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">EACO Earth Top 10 Cryptocurrencies</h1>
-            <p class="text-gray-400">十大数字货币兑换 EACO 价格展示 (USD & CNH)</p>
+            <p class="text-gray-400">9大数字货币兑换 EACO 价格展示 (USD & CNH)+地球文明协议 (Earth Asset Civilization Oracle)</p>
         </header>
 
-        <!-- Main Content -->
-        <div class="glass-card rounded-xl p-4 md:p-6 max-w-4xl mx-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold text-white">实时价格</h2>
-                <div id="lastUpdated" class="text-sm text-gray-400">
-                    正在加载...
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Crypto Price Tracker -->
+            <div class="lg:col-span-2">
+                <div class="glass-card rounded-xl p-4 md:p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-white">实时价格</h2>
+                        <div id="lastUpdated" class="text-sm text-gray-400">
+                            正在加载...
+                        </div>
+                    </div>
+
+                    <!-- Price Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-gray-700">
+                                    <th class="p-3 text-sm font-semibold text-gray-400">排名</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-400">代币</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-400">当前价格 (USD)</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-400">可兑换 EACO 数量</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-400">EACO 单价 (CNH)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cryptoTableBody">
+                                <!-- Loader Row -->
+                                <tr>
+                                    <td colspan="5" class="text-center p-8">
+                                        <div class="flex justify-center items-center">
+                                            <div class="loader"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Data rows will be inserted here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                     <!-- Footer Notes -->
+                    <div class="mt-6 text-xs text-gray-500 border-t border-gray-700 pt-4">
+                        <p><span class="font-semibold">注释:</span></p>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>“可兑换 EACO 数量” = 数字货币价格 ÷ EACO 单价 (USD)。</li>
+                            <li>所有价格为实时数据快照，每 300/3000 秒自动更新。</li>
+                            <li>CNH 价格按 `USD × 7.28` 汇率估算。</li>
+                            <li>EACO 价格来自 Solana 上的 DEX Screener 参考价，其他币种价格来自 CoinGecko API。</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <!-- Price Table -->
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="border-b border-gray-700">
-                            <th class="p-3 text-sm font-semibold text-gray-400">排名</th>
-                            <th class="p-3 text-sm font-semibold text-gray-400">代币</th>
-                            <th class="p-3 text-sm font-semibold text-gray-400">当前价格 (USD)</th>
-                            <th class="p-3 text-sm font-semibold text-gray-400">可兑换 EACO 数量</th>
-                            <th class="p-3 text-sm font-semibold text-gray-400">EACO 单价 (CNH)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cryptoTableBody">
-                        <!-- Loader Row -->
-                        <tr>
-                            <td colspan="5" class="text-center p-8">
-                                <div class="flex justify-center items-center">
-                                    <div class="loader"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Data rows will be inserted here by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Footer Notes -->
-            <div class="mt-6 text-xs text-gray-500 border-t border-gray-700 pt-4">
-                <p><span class="font-semibold">注释:</span></p>
-                <ul class="list-disc list-inside mt-2 space-y-1">
-                    <li>“可兑换 EACO 数量” = 数字货币价格 ÷ EACO 单价 (USD)。</li>
-                    <li>所有价格为实时数据快照，每 60 秒自动更新。</li>
-                    <li>CNH 价格按 `USD × 7.28` 汇率估算。</li>
-                    <li>EACO 价格来自 Solana 上的 DEX Screener 参考价，其他币种价格来自 CoinGecko API。</li>
-                </ul>
+            <!-- Right Column: EACO Modules -->
+            <div class="flex flex-col gap-8">
+                 <!-- EACO Semantic Price Module -->
+                <div class="glass-card rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-4">🧭 EACO 加密九角锚定模型</h3>
+                    <p class="text-sm text-gray-300 mb-4">资产通过 EACO 和 九种数字货币 的实时汇率进行锚定，再通过 EACO 协议映射其语义权重与价值。</p>
+                    <ul class="space-y-2 text-sm">
+                        <li><span class="font-bold text-sky-400">BTC:</span> 数字黄金代表</li>
+                        <li><span class="font-bold text-green-400">ETH:</span> 全球加密数字货币，数字金融主轴</li>
+						  <li><span class="font-bold text-green-400">SOL:</span> 全球加密数字货币，数字金融新力量</li>
+						 <li><span class="font-bold text-green-400">AVAX:</span> 加密数字货币，</li>
+						 <li><span class="font-bold text-green-400">DOGE:</span> 加密数字货币，</li>
+						<li><span class="font-bold text-green-400">BNB:</span> 加密数字货币，</li>
+						<li><span class="font-bold text-green-400">TRX:</span> 加密数字货币，</li>
+							<li><span class="font-bold text-green-400">USDC:</span> 加密稳定币，</li>
+							<li><span class="font-bold text-green-400">USDT:</span> 加密稳定币，</li>
+                        <li><span class="font-bold text-amber-400">EACO:</span> 协议锚点，代表跨文化劳动价值</li>
+                    </ul>
+                </div>
+                <!-- EACO Calculator -->
+                <div class="glass-card rounded-xl p-6">
+                    <h4 class="text-xl font-bold text-white mb-2">🧠 EACO 价值计算器</h4>
+                    <p class="text-xs text-gray-400 mb-3">协议价值 = 价格(USDC+USDT) × 语义权重 × 加密数字流动性因子</p>
+                    <div class="space-y-3">
+                         <div>
+                            <label for="cryptoSelect" class="block text-sm font-medium text-gray-300">选择数字货币</label>
+                            <select id="cryptoSelect" class="mt-1 block w-full bg-gray-900 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"></select>
+                        </div>
+                        <div>
+                            <label for="semanticWeight" class="block text-sm font-medium text-gray-300">语义权重 (0-1)</label>
+                            <input type="number" id="semanticWeight" value="0.8" step="0.01" min="0" max="1" class="mt-1 block w-full bg-gray-900 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="liquidityFactor" class="block text-sm font-medium text-gray-300">流动性等级 (1-10)</label>
+                            <input type="number" id="liquidityFactor" value="5" step="1" min="1" max="10" class="mt-1 block w-full bg-gray-900 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                        </div>
+                        <button id="calculateBtn" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-lg mt-2 transition">计算 EACO 协议价值</button>
+                    </div>
+                    <div id="calculationResult" class="mt-4 text-center bg-gray-900 p-3 rounded-lg hidden">
+                        <!-- Result will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- Tools & Links -->
+                <div class="glass-card rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-4">技术支持与工具</h3>
+                    <ul class="space-y-3">
+                        <li><a href="https://solscan.io/token/DqfoyZH96RnvZusSp3Cdncjpyp3C74ZmJzGhjmHnDHRH" target="_blank" class="flex items-center text-sky-400 hover:text-sky-300 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            Solscan: 查看实时流通</a></li>
+                        <li><a href="https://dexscreener.com/solana/DqfoyZH96RnvZusSp3Cdncjpyp3C74ZmJzGhjmHnDHRH" target="_blank" class="flex items-center text-sky-400 hover:text-sky-300 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            DexScreener: 实时价格图表</a></li>
+                        <li><a href="https://github.com/eacocc/EACO_Exchange_DApp" target="_blank" class="flex items-center text-sky-400 hover:text-sky-300 transition">
+                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                            EACO DApp 源代码</a></li>
+                         <li><a href="https://linktr.ee/web3eaco" target="_blank" class="flex items-center text-sky-400 hover:text-sky-300 transition">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-5.747-8.994l11.494 0"></path></svg>
+                            EACO 官方链接</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         
@@ -122,8 +189,15 @@ document.addEventListener('DOMContentLoaded', function() {
         'eaco':       { rank: 10, name: 'Earth Asset Civilization Oracle', symbol: 'EACO', icon: 'https://placehold.co/64x64/1a202c/9ca3af?text=E', price_usd: 0.00002466 }
     };
     
+    // --- STATE MANAGEMENT ---
+    let processedDataStore = [];
+
+    // --- DOM ELEMENTS ---
     const tableBody = document.getElementById('cryptoTableBody');
     const lastUpdatedElem = document.getElementById('lastUpdated');
+    const cryptoSelect = document.getElementById('cryptoSelect');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const calculationResult = document.getElementById('calculationResult');
 
     async function fetchData() {
         try {
@@ -135,20 +209,22 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const eacoPriceUSD = cryptoData.eaco.price_usd;
             
-            const processedData = Object.keys(cryptoData).map(id => {
+            processedDataStore = Object.keys(cryptoData).map(id => {
                 const data = cryptoData[id];
                 const priceUSD = id === 'eaco' ? data.price_usd : (prices[id]?.usd || 0);
                 const exchangeableEACO = eacoPriceUSD > 0 ? priceUSD / eacoPriceUSD : 0;
                 
                 return {
                     ...data,
+                    id: id,
                     price_usd: priceUSD,
                     exchangeable_eaco: exchangeableEACO,
                     eaco_price_cnh: eacoPriceUSD * CNH_RATE
                 };
             }).sort((a, b) => a.rank - b.rank);
             
-            renderTable(processedData);
+            renderTable(processedDataStore);
+            populateCryptoSelect(processedDataStore);
             updateTimestamp();
 
         } catch (error) {
@@ -178,6 +254,39 @@ document.addEventListener('DOMContentLoaded', function() {
             </tr>
         `).join('');
     }
+    
+    function populateCryptoSelect(data) {
+        // Only populate if it's empty to avoid re-rendering on every update
+        if (cryptoSelect.options.length === 0) {
+             cryptoSelect.innerHTML = data
+                .map(c => `<option value="${c.id}">${c.name} (${c.symbol})</option>`)
+                .join('');
+        }
+    }
+
+    function calculateEACOProtocolValue() {
+        const selectedId = cryptoSelect.value;
+        const crypto = processedDataStore.find(c => c.id === selectedId);
+        const semanticWeight = parseFloat(document.getElementById('semanticWeight').value) || 0;
+        const liquidity = parseInt(document.getElementById('liquidityFactor').value) || 1;
+
+        if (!crypto) {
+            calculationResult.innerHTML = `<p class="text-red-400">请选择一个有效的货币</p>`;
+            calculationResult.classList.remove('hidden');
+            return;
+        }
+
+        // Adapted Formula for Crypto: Price(USD) * Semantic Weight * Liquidity Factor
+        const liquidityFactor = Math.log1p(liquidity); 
+        const eacoProtocolValue = crypto.price_usd * semanticWeight * liquidityFactor;
+
+        calculationResult.innerHTML = `
+            <p class="text-sm text-gray-400">${crypto.name} (${crypto.symbol}) 的协议价值:</p>
+            <p class="text-xl font-bold text-amber-400 mt-1">${eacoProtocolValue.toFixed(4)} $e</p>
+        `;
+        calculationResult.classList.remove('hidden');
+    }
+
 
     function updateTimestamp() {
         const now = new Date();
@@ -206,9 +315,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- INITIALIZATION ---
     fetchData(); // Initial fetch
     setInterval(fetchData, UPDATE_INTERVAL); // Fetch every minute
-
+    calculateBtn.addEventListener('click', calculateEACOProtocolValue);
 });
 </script>
 
 </body>
 </html>
+
